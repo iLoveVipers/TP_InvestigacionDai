@@ -22,9 +22,9 @@ export default function App() {
   }, []);
 
   const sendSms = async () => {
-    console.log("Generating pdf");
+    console.log("Generando pdf");
     const { uri } = await Print.printToFileAsync({
-      html: "<h1>Hi friends</h1>"
+      html: "<h1>Hola test</h1>"
     });
 
     console.log(uri);
@@ -56,7 +56,7 @@ export default function App() {
 
   const showRecipients = () => {
     if (recipients.length === 0) {
-      return <Text>No recipients added!</Text>
+      return <Text>No hay attachments agregados!</Text>
     }
 
     return recipients.map((recipient, index) => {
@@ -64,25 +64,88 @@ export default function App() {
     });
   };
 
-  return (
-    <View style={styles.container}>
-      <TextInput value={phoneNumber} placeholder="Phone Number" onChangeText={(value) => setPhoneNumber(value)} />
-      <Button title='Add Number' onPress={addNumber} />
-      <TextInput value={message} placeholder="Message" onChangeText={(value) => setMessage(value)} />
-      <Text>Recipients:</Text>
-      {showRecipients()}
-      <Button title='Clear Recipients' onPress={() => setRecipients([])} />
-      {isAvailable ? <Button title="Send SMS" onPress={sendSms} /> : <Text>SMS not available</Text>}
-      <StatusBar style="auto" />
-    </View>
+  return (<View style={styles.container}>
+    <Text style={styles.heading}>App de Mensajería</Text>
+  
+    <TextInput
+      style={styles.input}
+      value={phoneNumber}
+      placeholder="Número de Celular"
+      onChangeText={(value) => setPhoneNumber(value)}
+    />
+  
+    <Button title="Add Number" onPress={addNumber} />
+  
+    <TextInput
+      style={styles.input}
+      value={message}
+      placeholder="Mensaje"
+      onChangeText={(value) => setMessage(value)}
+    />
+  
+    <Text style={styles.recipientsTitle}>Attachments:</Text>
+    {showRecipients()}
+  
+    <Button title="Limpiar" onPress={() => setRecipients([])} />
+  
+    {isAvailable ? (
+      <Button style={styles.btn} title="Enviar SMS" onPress={sendSms} />
+    ) : (
+      <Text style={styles.smsNotAvailable}>SMS no disponible</Text>
+    )}
+  
+    <StatusBar style="auto" />
+  </View>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 50,
+    margin: 20,
   },
-});
+  heading: {
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    paddingLeft: 10,
+  },
+  recipientsTitle: {
+    fontSize: 16,
+    marginTop: 10,
+  },
+  smsNotAvailable: {
+    fontSize: 16,
+    marginTop: 10,
+    color: 'red',
+  },
+  btn: {
+    borderRadius: 20,
+    backgroundColor: '#5e318f',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxHeight: '3rem',
+    minWidth: '10rem',
+    text: 'ffffff',
+    color: '#ffffff',
+    padding: 10,
+    margin: '1rem',
+    marginBottom: 30,
+  borderRadius: "50px",
+  shadowColor: '#000000',
+  shadowOffset: {width: 1, height: 5},
+  shadowOpacity: 0.2,
+  shadowRadius: 17,
+  },
+};
